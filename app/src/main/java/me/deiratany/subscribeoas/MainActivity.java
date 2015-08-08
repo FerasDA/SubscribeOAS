@@ -9,20 +9,44 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import java.io.File;
 
 
 public class MainActivity extends Activity {
+
+    CSVFileWriter csv;
+    StringBuffer filePath;
+    File file;
+
+    EditText nameEdit;
+    EditText emailEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        nameEdit = (EditText)findViewById(R.id.full_name);
+        emailEdit = (EditText)findViewById(R.id.email);
+
         Button subscribeBtn = (Button)findViewById(R.id.subscribe_button);
+
+        filePath = new StringBuffer();
+        filePath.append("/sdcard/abc.csv");
+        file = new File(filePath.toString());
+
+        csv = new CSVFileWriter(file);
+
         subscribeBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                sendEmail();
+                csv.writeHeader(nameEdit.getText().toString());
+//                sendEmail();
+                Log.v("EditText", nameEdit.getText().toString());
+                Log.v("EditText", emailEdit.getText().toString());
+
             }
         });
     }
